@@ -1,3 +1,24 @@
 const app = require('../app');
+const config = require('config');
+const mongoose = require('mongoose');
 
-app.listen(3000);
+const PORT =  config.get('port') || 3000;
+const DB_URI = config.get('mongoUri') 
+
+const start = async() => {
+    try{
+        await mongoose.connect(DB_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useCreateIndex: true,
+        })
+        app.listen(PORT, () => console.log(`App has been started on port ${PORT}`));
+    }catch (e){
+        console.log("Server Error", e.message);
+        precess.exit(1);
+    }
+}
+
+start();
+
+
