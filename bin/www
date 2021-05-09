@@ -2,7 +2,7 @@ const app = require('../app');
 const config = require('config');
 const mongoose = require('mongoose');
 
-const PORT =  config.get('port') || 3000;
+const PORT =  config.get('port') || 5000;
 const DB_URI = config.get('mongoUri') 
 
 const start = async() => {
