@@ -15,16 +15,32 @@ class AuthPage extends React.Component {
     }
     componentDidMount(){}
 
+    onShowNotification = (status, message) => {
+        const notificationStatus = status ? 'success' : 'error'  
+        notification[notificationStatus]({
+            message,
+        });
+    }
+
 
     onFinish = async(values) => {
+        const {isLoginTab} = this.state
         this.setState({loading: true})
-        const {status, message} = await authService.register(values)
-
-        notification[status]({
-            message: message,
-        });
+        if(isLoginTab){
+            await this.onUserAuth(values, 'login')
+        }else{
+            await this.onUserAuth(values, 'register')
+        }
         this.setState({loading: false})
     };
+
+    onUserAuth = async(values, action) => {
+        const {status, message, data} = await authService[action](values)
+        this.onShowNotification(status, message)
+        if(status){
+            this.setState({isLoginTab: true})
+        }
+    }
 
     render(){
         const {isLoginTab, loading} = this.state;
