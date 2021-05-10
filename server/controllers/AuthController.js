@@ -12,17 +12,17 @@ module.exports = {
 
             const user = await User.findOne({email})
 
-            if(!user){
-                return res.status(400).send(vm.error('User not found'))
-            }
+    if(!user){
+        return res.status(400).send(vm.error('User not found'))
+    }
 
-            const isMatchPasswords = await bcrypt.compare(password, user.password)
+    const isMatchPasswords = await bcrypt.compare(password, user.password)
 
-            if(!isMatchPasswords){
-                return res.status(400).send(vm.error('Wrong password'))
-            }
+    if(!isMatchPasswords){
+        return res.status(400).send(vm.error('Wrong password'))
+    }
 
-            const token = jwt.sign(
+    const token = jwt.sign(
                 {userId: user.id},
                 config.get('jwtSecret'),
                 {expiresIn: '1h'}
