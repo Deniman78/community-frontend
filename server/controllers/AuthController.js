@@ -5,9 +5,9 @@ const jwt = require('jsonwebtoken');
 const vm = require('../vm/AuthVM');
 
 module.exports = {
-  login: async (req, res) => {
-    try {
-      const { email, password } = vm.loginModel(req.body);
+login: async (req, res) => {
+try {
+const { email, password } = vm.loginModel(req.body);
 
 const user = await User.findOne({ email });
 
