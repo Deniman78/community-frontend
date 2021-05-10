@@ -23,17 +23,17 @@ return res.status(400).send(vm.error('Wrong password'))
 }
 
 const token = jwt.sign(
-        {userId: user.id},
-        config.get('jwtSecret'),
-    {expiresIn: '1h'}
-    )  
-            
-            return res.send(vm.login(token))
-            
-        }catch{
-            return res.status(500).send(vm.error('Something went wrong'))
-        }
-    },
+    {userId: user.id},
+    config.get('jwtSecret'),
+{expiresIn: '1h'}
+)  
+        
+        return res.send(vm.login(token))
+        
+    }catch{
+        return res.status(500).send(vm.error('Something went wrong'))
+    }
+},
 
     register: async(req,res) => {
         try{
