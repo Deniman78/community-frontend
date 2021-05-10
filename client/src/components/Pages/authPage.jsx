@@ -1,170 +1,190 @@
-import React from 'react'
+import React from 'react';
 
 import { Form, Input, Button, notification } from 'antd';
 
-import {AuthService} from '../../service' 
+import { AuthService } from '../../service';
 
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-const authService = new AuthService()
+const authService = new AuthService();
 
 class AuthPage extends React.Component {
-    state = {
-        isLoginTab: true,
-        loading: false,
+  state = {
+    isLoginTab: true,
+    loading: false,
+  };
+  componentDidMount() {}
+
+  onShowNotification = (status, message) => {
+    const notificationStatus = status ? 'success' : 'error';
+    notification[notificationStatus]({
+      message,
+    });
+  };
+
+  onFinish = async values => {
+    const { isLoginTab } = this.state;
+    this.setState({ loading: true });
+    if (isLoginTab) {
+      await this.onUserLogin(values);
+    } else {
+      await this.onUserRegister(values);
     }
-    componentDidMount(){}
+    this.setState({ loading: false });
+  };
 
-    onShowNotification = (status, message) => {
-        const notificationStatus = status ? 'success' : 'error'  
-        notification[notificationStatus]({
-            message,
-        });
-    }
-
-
-    onFinish = async(values) => {
-        const {isLoginTab} = this.state
-        this.setState({loading: true})
-        if(isLoginTab){
-            await this.onUserLogin(values)
-        }else{
-            await this.onUserRegister(values)
+  onUserLogin = values => {
+    authService
+      .login(values)
+      .then(res => {
+        if (!res.status) {
+          this.onShowNotification(res.status, res.error);
+          return;
         }
-        this.setState({loading: false})
-    };
+        this.onShowNotification(
+          res.status,
+          'You have been successful logged in!'
+        );
+      })
+      .catch(error => console.log(error));
+  };
 
-    onUserLogin = (values) => {
-        authService.login(values)
-        .then(res => {
-            if(!res.status){
-                this.onShowNotification(res.status, res.error)
-                return;
-            }
-            this.onShowNotification(res.status, 'You have been successful logged in!');
-        }).catch(error => console.log(error))
-    }
+  onUserRegister = values => {
+    authService
+      .register(values)
+      .then(res => {
+        if (!res.status) {
+          this.onShowNotification(res.status, res.error);
+          return;
+        }
+        this.onShowNotification(
+          res.status,
+          'You have been successful registered!'
+        );
+      })
+      .catch(error => console.log(error));
+  };
 
-    onUserRegister = (values) => {
-        authService.register(values)
-        .then(res => {
-            if(!res.status){
-                this.onShowNotification(res.status, res.error)
-                return;
-            }
-            this.onShowNotification(res.status, 'You have been successful registered!');
-        }).catch(error => console.log(error))
-    }
-
-    render(){
-        const {isLoginTab, loading} = this.state;
-        return(
-            <AuthContainer>
-            
-            <div className="auth_form">
-            <div className="tabs">
-                <span className={isLoginTab ? "active"  : ''} onClick={() => this.setState({isLoginTab: true})}>Login</span>
-                <span className={!isLoginTab ? "active"  : ''} onClick={() => this.setState({isLoginTab: false})}>Register</span>  
-            </div>
-            
-            <Form
-            name="basic"
-            onFinish={this.onFinish}
-            layout="vertical"
+  render() {
+    const { isLoginTab, loading } = this.state;
+    return (
+      <AuthContainer>
+        <div className="auth_form">
+          <div className="tabs">
+            <span
+              className={isLoginTab ? 'active' : ''}
+              onClick={() => this.setState({ isLoginTab: true })}
             >
+              Login
+            </span>
+            <span
+              className={!isLoginTab ? 'active' : ''}
+              onClick={() => this.setState({ isLoginTab: false })}
+            >
+              Register
+            </span>
+          </div>
+
+          <Form name="basic" onFinish={this.onFinish} layout="vertical">
             {isLoginTab ? (
-                <div className="inputs">
+              <div className="inputs">
                 <Form.Item
-                label="Email"
-                name="email"
-                rules={[{ required: true, message: 'Please input your email!' }]}
-            >
-                <Input />
-            </Form.Item>
+                  label="Email"
+                  name="email"
+                  rules={[
+                    { required: true, message: 'Please input your email!' },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
 
-            <Form.Item
-                label="Password"
-                name="password"
-                rules={[{ required: true, message: 'Please input your password!' }]}
-            >
-                <Input.Password />
-            </Form.Item>
-
-            
-            </div>
+                <Form.Item
+                  label="Password"
+                  name="password"
+                  rules={[
+                    { required: true, message: 'Please input your password!' },
+                  ]}
+                >
+                  <Input.Password />
+                </Form.Item>
+              </div>
             ) : (
-                <div className="inputs">
-                    <Form.Item
-                    label="Email"
-                    name="email"
-                    rules={[{ required: true, message: 'Please input your email!' }]}
+              <div className="inputs">
+                <Form.Item
+                  label="Email"
+                  name="email"
+                  rules={[
+                    { required: true, message: 'Please input your email!' },
+                  ]}
                 >
-                    <Input />
+                  <Input />
                 </Form.Item>
 
                 <Form.Item
-                    label="Password"
-                    name="password"
-                    rules={[{ required: true, message: 'Please input your password!' }]}
+                  label="Password"
+                  name="password"
+                  rules={[
+                    { required: true, message: 'Please input your password!' },
+                  ]}
                 >
-                    <Input.Password />
+                  <Input.Password />
                 </Form.Item>
-                </div>
+              </div>
             )}
-            <Form.Item >
-                <Button loading={loading} type="primary" htmlType="submit">
-                {isLoginTab ? "Login" : "Register"}
-                </Button>
+            <Form.Item>
+              <Button loading={loading} type="primary" htmlType="submit">
+                {isLoginTab ? 'Login' : 'Register'}
+              </Button>
             </Form.Item>
-            </Form>
-            </div>  
-            </AuthContainer>
-        )
-    }
+          </Form>
+        </div>
+      </AuthContainer>
+    );
+  }
 }
 
 const AuthContainer = styled.div`
-    height: 100vh;
-    width: 500px;
-    margin: 0 auto;
+  height: 100vh;
+  width: 500px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .tabs {
+    width: 100%;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    .tabs{
-        width: 100%;
-        display: flex;
-        justify-content: space-around;
-        margin-bottom: 20px;
-        span{
-            cursor: pointer;
-            text-transform: uppercase;
-            font-size: 24px;
-            font-weight: 600;
-            transition: all .5s;
-            width: 120px;
-            text-align: center;
-            border-bottom: 1px solid white;
-        }
-        .active{
-            border-color: #e8e8e8
-        }
+    justify-content: space-around;
+    margin-bottom: 20px;
+    span {
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 24px;
+      font-weight: 600;
+      transition: all 0.5s;
+      width: 120px;
+      text-align: center;
+      border-bottom: 1px solid white;
     }
-    .auth_form{
-        width: 400px;
-        width: 100%;
-        min-height: 400px;
-        padding: 20px;
-        background-color: #fff;
-        box-shadow: 0 2px 5px 0 rgb(51 51 79 / 7%);
-        border-radius: 3px;
-        border: 1px solid #e8e8e8;
-        .ant-form{
-            min-height: 318px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+    .active {
+      border-color: #e8e8e8;
     }
-`
+  }
+  .auth_form {
+    width: 400px;
+    width: 100%;
+    min-height: 400px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px 0 rgb(51 51 79 / 7%);
+    border-radius: 3px;
+    border: 1px solid #e8e8e8;
+    .ant-form {
+      min-height: 318px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  }
+`;
 
-export default AuthPage
+export default AuthPage;

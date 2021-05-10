@@ -1,14 +1,16 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { BrowserRouter as Router } from 'react-router-dom'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-import {App} from './components/App'
-import {ErrorBoundary} from './components/ErrorBoundary'
-import "antd/dist/antd.css";
+import { App } from './components/App';
+import { ErrorBoundary } from './components/ErrorBoundary';
+import 'antd/dist/antd.css';
 
 ReactDOM.render(
-    <ErrorBoundary>
+  <ErrorBoundary>
     <Router>
-<App/>
-</Router>
-</ErrorBoundary>, document.getElementById('root'))
+      <App />
+    </Router>
+  </ErrorBoundary>,
+  document.getElementById('root')
+);

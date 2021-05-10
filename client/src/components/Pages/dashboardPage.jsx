@@ -1,15 +1,11 @@
-import React from 'react'
+import React from 'react';
 
 class DashboardPage extends React.Component {
-    state = {}
-    componentDidMount(){}
-    render(){
-        return(
-            <div>
-                Dashboard
-            </div>
-        )
-    }
+  state = {};
+  componentDidMount() {}
+  render() {
+    return <div>Dashboard</div>;
+  }
 }
 
-export default DashboardPage
+export default DashboardPage;

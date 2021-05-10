@@ -1,5 +1,5 @@
 {
-    "jwtSecret": "nKLNDASafweefweNJD@#O!ND#N@",
-    "mongoUri": "mongodb+srv://user:1234@cluster0.jtzqj.mongodb.net/community?retryWrites=true&w=majority",
-    "port": "5000"
+  "jwtSecret": "nKLNDASafweefweNJD@#O!ND#N@",
+  "mongoUri": "mongodb+srv://user:1234@cluster0.jtzqj.mongodb.net/community?retryWrites=true&w=majority",
+  "port": "5000"
 }

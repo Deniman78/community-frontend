@@ -1,4 +1,3 @@
-
 module.exports = app => {
-    require('./AuthRoute')(app)
-}
+  require('./AuthRoute')(app);
+};
