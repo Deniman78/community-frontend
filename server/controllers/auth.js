@@ -2,14 +2,15 @@ const User = require('../models/user')
 const bcrypt = require('bcryptjs')
 const config = require('config')
 const jwt = require('jsonwebtoken')
-const vm = require('../vm/authVM');
+const vm = require('../vm/AuthVM');
 const user = require('../models/user')
 
 
 module.exports = {
     login: async(req, res) => {
         try{
-            const {email, password} = req.body
+            const {email, password} = vm.loginModel(req.body)
+
             const user = await User.findOne({email})
 
             if(!user){
@@ -21,13 +22,14 @@ module.exports = {
             if(!isMatchPasswords){
                 return res.status(400).send(vm.error('Wrong password'))
             }
+
             const token = jwt.sign(
                 {userId: user.id},
                 config.get('jwtSecret'),
                 {expiresIn: '1h'}
             )  
             
-            return res.send(vm.login({token, msg: 'You have been logged in!'}))
+            return res.send(vm.login(token))
             
         }catch{
             return res.status(500).send(vm.error('Something went wrong'))
@@ -36,7 +38,7 @@ module.exports = {
 
     register: async(req,res) => {
         try{
-            const {email, password} = req.body
+            const {email, password} = vm.loginModel(req.body)
             
             const isUserExists = await User.findOne({email})
 
@@ -50,7 +52,13 @@ module.exports = {
 
             await user.save();
 
-            return res.status(201).send(vm.register('User created'))
+            const token = jwt.sign(
+                {userId: user.id},
+                config.get('jwtSecret'),
+                {expiresIn: '1h'}
+            )
+
+            return res.send(vm.login(token))
             
         }catch{
             return res.status(500).send(vm.error('Something went wrong'))

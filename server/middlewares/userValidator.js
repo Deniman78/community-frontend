@@ -11,8 +11,7 @@ exports.userValidator = [
   check('email')
     .trim()
     .normalizeEmail()
-    .not()
-    .isEmpty()
+    .isEmail()
     .withMessage('Invalid email address!')
     .bail(),
    check('password')

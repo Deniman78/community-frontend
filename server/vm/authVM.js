@@ -1,28 +1,55 @@
 
-class ErrorResponseVM {
-    constructor(error) {
-        this.status = false;
-        this.message = error;
+/**
+ * @typedef LoginVM
+ * @property {string} email.required
+ * @property {string} password.required
+ */
+class LoginVM { 
+    constructor(params){
+        this.email = params.email
+        this.password = params.password
     }
 }
 
-class LoginVM {
-    constructor(params) {
-        this.status = params.token != null;
-        this.message = params.msg;
-        this.data = params.token;
-    }
-}
-
+/**
+ * @typedef RegisterVM
+ * @property {string} email.required
+ * @property {string} password.required
+ */
 class RegisterVM {
-    constructor(params) {
-        this.status = true;
-        this.message = params;
+    constructor(params){
+        this.email = params.email
+        this.password = params.password
+    }
+}
+
+/**
+ * @typedef LoginResponseVM
+ * @property {boolean} status
+ * @property {string} token
+ */
+class LoginResponseVM {
+    constructor(token){
+        this.status = token !== null
+        this.token = token
+    }
+}
+
+/**
+ * @typedef ErrorResponseVM
+ * @property {boolean} status
+ * @property {string} error
+ */
+class ErrorResponseVM {
+    constructor(error){
+        this.status = false
+        this.error = error
     }
 }
 
 module.exports = {
+    login: (token) => new LoginResponseVM(token),
     error: (error) => new ErrorResponseVM(error),
-    login: (params) => new LoginVM(params),
-    register: (params) => new RegisterVM(params)
+    loginModel: (params) => new LoginVM(params),
+    registerModel: (params) => new RegisterVM(params)
 };
