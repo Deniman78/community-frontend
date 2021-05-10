@@ -18,12 +18,12 @@ const accountReducer = (state = INITIAL_STATE, action) => {
     case UNAUTHORIZE_USER:
       return {
         ...state,
-        user: null,
+        user: action.payload,
       };
     case REGISTER_USER:
       return {
         ...state,
-        user: null,
+        user: action.payload,
       };
     default:
       return state;
