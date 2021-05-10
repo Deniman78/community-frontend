@@ -8,7 +8,7 @@
     "server": "nodemon ./bin/www",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "pretty-quick": "pretty-quick"
+    "pretty-quick": "pretty-quick --staged"
   },
   "repository": {
     "type": "git",
