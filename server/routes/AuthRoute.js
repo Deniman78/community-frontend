@@ -1,4 +1,4 @@
-const auth = require('../controllers/auth')
+const authController = require('../controllers/AuthController')
 const {userValidator} = require('../middlewares/userValidator');
 
 module.exports = app => {
@@ -11,7 +11,7 @@ module.exports = app => {
      * @returns {ErrorResponseVM.model} 400 - Bad Request
      * @returns {string} 500 - Internal Server Error
      */
-    app.post('/api/auth/login', auth.login)
+    app.post('/api/auth/login', authController.login)
 
 
     /**
@@ -22,6 +22,6 @@ module.exports = app => {
      * @returns {ErrorResponseVM.model} 400 - Bad Request
      * @returns {string} 500 - Internal Server Error
      */
-    app.post('/api/auth/register',userValidator, auth.register) 
+    app.post('/api/auth/register',userValidator, authController.register) 
 
 }

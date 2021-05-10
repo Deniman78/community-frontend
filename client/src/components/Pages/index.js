@@ -1,2 +1,2 @@
-export {default as AuthPage} from './authPage'
-export {default as DashboardPage} from './dashboardPage'
+export {default as AuthPage} from './AuthPage'
+export {default as DashboardPage} from './DashboardPage'

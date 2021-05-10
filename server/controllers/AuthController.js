@@ -1,9 +1,8 @@
-const User = require('../models/user')
+const User = require('../models/UserModel')
 const bcrypt = require('bcryptjs')
 const config = require('config')
 const jwt = require('jsonwebtoken')
 const vm = require('../vm/AuthVM');
-const user = require('../models/user')
 
 
 module.exports = {
