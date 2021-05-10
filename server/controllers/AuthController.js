@@ -25,7 +25,7 @@ if(!isMatchPasswords){
 const token = jwt.sign(
                 {userId: user.id},
                 config.get('jwtSecret'),
-                {expiresIn: '1h'}
+            {expiresIn: '1h'}
             )  
             
             return res.send(vm.login(token))
