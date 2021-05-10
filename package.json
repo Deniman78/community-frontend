@@ -7,7 +7,8 @@
     "start": "node ./bin/www",
     "server": "nodemon ./bin/www",
     "client": "npm run start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "pretty-quick": "pretty-quick"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,9 @@
   "devDependencies": {
     "concurrently": "^6.1.0",
     "express-swagger-generator": "^1.1.17",
-    "nodemon": "^2.0.7"
+    "husky": "^6.0.0",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.3.0",
+    "pretty-quick": "^3.1.0"
   }
 }
