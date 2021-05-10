@@ -15,15 +15,15 @@ module.exports = {
                                                                 return res.status(400).send(vm.error('User not found'));
                                                                 }
 
-                                                                const isMatchPasswords = await bcrypt.compare(password, user.password);
+                                                            const isMatchPasswords = await bcrypt.compare(password, user.password);
 
-                                                                if (!isMatchPasswords) {
-                                                                return res.status(400).send(vm.error('Wrong password'));
-                                                                }
+                                                            if (!isMatchPasswords) {
+                                                            return res.status(400).send(vm.error('Wrong password'));
+                                                            }
 
-                                                                const token = jwt.sign({ userId: user.id }, config.get('jwtSecret'), {
-                                                                expiresIn: '1h',
-                                                                });
+                                                            const token = jwt.sign({ userId: user.id }, config.get('jwtSecret'), {
+                                                            expiresIn: '1h',
+                                                            });
 
                                                                 return res.send(vm.login(token));
                                                                 } catch {
