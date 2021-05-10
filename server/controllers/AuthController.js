@@ -1,66 +1,59 @@
-const User = require('../models/UserModel')
-const bcrypt = require('bcryptjs')
-const config = require('config')
-const jwt = require('jsonwebtoken')
+const User = require('../models/UserModel');
+const bcrypt = require('bcryptjs');
+const config = require('config');
+const jwt = require('jsonwebtoken');
 const vm = require('../vm/AuthVM');
 
-
 module.exports = {
-    login: async(req, res) => {
-        try{
-            const {email, password} = vm.loginModel(req.body)
+  login: async (req, res) => {
+    try {
+      const { email, password } = vm.loginModel(req.body);
 
-            const user = await User.findOne({email})
+      const user = await User.findOne({ email });
 
-if(!user){
-    return res.status(400).send(vm.error('User not found'))
+if (!user) {
+return res.status(400).send(vm.error('User not found'));
 }
 
-const isMatchPasswords = await bcrypt.compare(password, user.password)
+const isMatchPasswords = await bcrypt.compare(password, user.password);
 
-if(!isMatchPasswords){
-return res.status(400).send(vm.error('Wrong password'))
+if (!isMatchPasswords) {
+return res.status(400).send(vm.error('Wrong password'));
 }
 
-const token = jwt.sign(
-    {userId: user.id},
-    config.get('jwtSecret'),
-{expiresIn: '1h'}
-)  
-        
-        return res.send(vm.login(token))
-        
-    }catch{
-        return res.status(500).send(vm.error('Something went wrong'))
-    }
+const token = jwt.sign({ userId: user.id }, config.get('jwtSecret'), {
+expiresIn: '1h',
+});
+
+return res.send(vm.login(token));
+} catch {
+return res.status(500).send(vm.error('Something went wrong'));
+}
 },
 
-    register: async(req,res) => {
-        try{
-            const {email, password} = vm.loginModel(req.body)
-            
-            const isUserExists = await User.findOne({email})
+register: async (req, res) => {
+    try {
+      const { email, password } = vm.loginModel(req.body);
 
-            if(isUserExists){
-                return res.status(400).send(vm.error('User already exists'))
-            }
+      const isUserExists = await User.findOne({ email });
 
-            const hashedPassword = await bcrypt.hash(password, 12)
+      if (isUserExists) {
+        return res.status(400).send(vm.error('User already exists'));
+      }
 
-            const user = new User({email, password: hashedPassword})
+      const hashedPassword = await bcrypt.hash(password, 12);
 
-            await user.save();
+      const user = new User({ email, password: hashedPassword });
 
-            const token = jwt.sign(
-                {userId: user.id},
-                config.get('jwtSecret'),
-                {expiresIn: '1h'}
-            )
+      await user.save();
 
-            return res.send(vm.login(token))
-            
-        }catch{
-            return res.status(500).send(vm.error('Something went wrong'))
-        }
+      const token = jwt.sign({ userId: user.id }, config.get('jwtSecret'), {
+        expiresIn: '1h',
+      });
+
+      return res.send(vm.login(token));
+    } catch {
+      return res.status(500).send(vm.error('Something went wrong'));
     }
-}
+  },
+};
