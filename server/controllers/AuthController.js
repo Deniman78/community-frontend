@@ -15,7 +15,7 @@ module.exports = {
                                                                 return res.status(400).send(vm.error('User not found'));
                                                                 }
 
-                                                            const isMatchPasswords = await bcrypt.compare(password, user.password);
+                                                        const isMatchPasswords = await bcrypt.compare(password, user.password);
 
                                                             if (!isMatchPasswords) {
                                                             return res.status(400).send(vm.error('Wrong password'));
