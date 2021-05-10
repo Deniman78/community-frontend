@@ -27,19 +27,33 @@ class AuthPage extends React.Component {
         const {isLoginTab} = this.state
         this.setState({loading: true})
         if(isLoginTab){
-            await this.onUserAuth(values, 'login')
+            await this.onUserLogin(values)
         }else{
-            await this.onUserAuth(values, 'register')
+            await this.onUserRegister(values)
         }
         this.setState({loading: false})
     };
 
-    onUserAuth = async(values, action) => {
-        const {status, message, data} = await authService[action](values)
-        this.onShowNotification(status, message)
-        if(status){
-            this.setState({isLoginTab: true})
-        }
+    onUserLogin = (values) => {
+        authService.login(values)
+        .then(res => {
+            if(!res.status){
+                this.onShowNotification(res.status, res.error)
+                return;
+            }
+            this.onShowNotification(res.status, 'You have been successful logged in!');
+        }).catch(error => console.log(error))
+    }
+
+    onUserRegister = (values) => {
+        authService.register(values)
+        .then(res => {
+            if(!res.status){
+                this.onShowNotification(res.status, res.error)
+                return;
+            }
+            this.onShowNotification(res.status, 'You have been successful registered!');
+        }).catch(error => console.log(error))
     }
 
     render(){
