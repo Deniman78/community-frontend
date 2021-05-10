@@ -19,14 +19,14 @@ if(!user){
 const isMatchPasswords = await bcrypt.compare(password, user.password)
 
 if(!isMatchPasswords){
-    return res.status(400).send(vm.error('Wrong password'))
+return res.status(400).send(vm.error('Wrong password'))
 }
 
 const token = jwt.sign(
-                {userId: user.id},
-                config.get('jwtSecret'),
-            {expiresIn: '1h'}
-            )  
+        {userId: user.id},
+        config.get('jwtSecret'),
+    {expiresIn: '1h'}
+    )  
             
             return res.send(vm.login(token))
             
