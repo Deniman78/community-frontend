@@ -14,7 +14,7 @@
     "type": "git",
     "url": "git+https://github.com/Deniman78/community.git"
   },
-  "author": "",
+  "author": "Denis Manchenko <manchenko.d@brights.cloud>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Deniman78/community/issues"

@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import Routes from '../../routes';
 import { AuthPage } from '../Pages';
@@ -9,7 +10,7 @@ class App extends React.Component {
   state = {};
   componentDidMount() {}
   render() {
-    const routes = Routes(false);
+    const routes = Routes(this.props.user);
     return <AppContainer>{routes}</AppContainer>;
   }
 }
@@ -18,4 +19,8 @@ const AppContainer = styled.div`
   background: #f7f7fc;
 `;
 
-export default App;
+const mapStateToProps = ({ account }) => ({
+  user: account.user,
+});
+
+export default connect(mapStateToProps)(App);

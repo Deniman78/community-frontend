@@ -1,12 +1,10 @@
 import React from 'react';
-
+import { connect } from 'react-redux';
 import { Form, Input, Button, notification } from 'antd';
-
-import { AuthService } from '../../service';
 
 import styled from 'styled-components';
 
-const authService = new AuthService();
+import { authorizeUser, registerUser } from '../../actions';
 
 class AuthPage extends React.Component {
   state = {
@@ -14,6 +12,8 @@ class AuthPage extends React.Component {
     loading: false,
   };
   componentDidMount() {}
+
+  componentDidUpdate() {}
 
   onShowNotification = (status, message) => {
     const notificationStatus = status ? 'success' : 'error';
@@ -33,36 +33,12 @@ class AuthPage extends React.Component {
     this.setState({ loading: false });
   };
 
-  onUserLogin = values => {
-    authService
-      .login(values)
-      .then(res => {
-        if (!res.status) {
-          this.onShowNotification(res.status, res.error);
-          return;
-        }
-        this.onShowNotification(
-          res.status,
-          'You have been successful logged in!'
-        );
-      })
-      .catch(error => console.log(error));
+  onUserLogin = async values => {
+    await this.props.authorizeUser(values);
   };
 
-  onUserRegister = values => {
-    authService
-      .register(values)
-      .then(res => {
-        if (!res.status) {
-          this.onShowNotification(res.status, res.error);
-          return;
-        }
-        this.onShowNotification(
-          res.status,
-          'You have been successful registered!'
-        );
-      })
-      .catch(error => console.log(error));
+  onUserRegister = async values => {
+    await this.props.registerUser(values);
   };
 
   render() {
@@ -187,4 +163,12 @@ const AuthContainer = styled.div`
   }
 `;
 
-export default AuthPage;
+const mapStateToProps = ({ account }) => ({
+  error: account.error,
+  user: account.user,
+});
+
+export default connect(mapStateToProps, {
+  authorizeUser,
+  registerUser,
+})(AuthPage);
