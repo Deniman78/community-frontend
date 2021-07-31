@@ -1,24 +1,14 @@
-const authController = require('../controllers/AuthController');
-const { userValidator } = require('../middlewares/userValidator');
+const {AuthController} = require('../controllers');
+const { UserValidatorMiddleware, } = require('../middlewares');
 
 module.exports = app => {
-  /**
-   * @route POST /api/auth/login
-   * @group Authorization
-   * @param {LoginVM.model} model.body.required
-   * @returns {LoginResponseVM.model} 200 - OK
-   * @returns {ErrorResponseVM.model} 400 - Bad Request
-   * @returns {string} 500 - Internal Server Error
-   */
-  app.post('/api/auth/login', authController.login);
+  app.post('/api/auth/login', AuthController.login);
 
-  /**
-   * @route POST /api/auth/register
-   * @group Authorization
-   * @param {RegisterVM.model} model.body.required
-   * @returns {LoginResponseVM.model} 200 - OK
-   * @returns {ErrorResponseVM.model} 400 - Bad Request
-   * @returns {string} 500 - Internal Server Error
-   */
-  app.post('/api/auth/register', userValidator, authController.register);
+  app.post('/api/auth/register', UserValidatorMiddleware, AuthController.register);
+
+  app.post('/api/auth/logout', AuthController.logout);
+
+  app.get('api/auth/activate/:link', AuthController.activate);
+
+  app.get('api/auth/refresh', AuthController.refresh);
 };

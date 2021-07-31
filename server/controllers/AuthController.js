@@ -1,59 +1,64 @@
-const User = require('../models/UserModel');
-const bcrypt = require('bcryptjs');
-const config = require('config');
-const jwt = require('jsonwebtoken');
-const vm = require('../vm/AuthVM');
+const {AuthService} = require('../service');
 
 module.exports = {
-  login: async (req, res) => {
+  register: async (req, res, next) => {
     try {
-      const { email, password } = vm.loginModel(req.body);
 
-      const user = await User.findOne({ email });
-
-      if (!user) {
-        return res.status(400).send(vm.error('User not found'));
-      }
-
-      const isMatchPasswords = await bcrypt.compare(password, user.password);
-
-      if (!isMatchPasswords) {
-        return res.status(400).send(vm.error('Wrong password'));
-      }
-
-      const token = jwt.sign({ userId: user.id }, config.get('jwtSecret'), {
-        expiresIn: '1h',
-      });
-
-      return res.send(vm.login(token));
-    } catch {
-      return res.status(500).send(vm.error('Something went wrong'));
+      const {email, password} = req.body;
+      const userData = await AuthService.register(email, password);
+      res.cookie('refreshToken', {}, {maxAge: 1 * 24 * 60 * 60 * 1000, httpOnly: true});
+      return res.json(userData);
+      
+    } catch(err) {
+      next(err);
     }
   },
 
-  register: async (req, res) => {
+  login: async (req, res, next) => {
     try {
-      const { email, password } = vm.loginModel(req.body);
 
-      const isUserExists = await User.findOne({ email });
-
-      if (isUserExists) {
-        return res.status(400).send(vm.error('User already exists'));
-      }
-
-      const hashedPassword = await bcrypt.hash(password, 12);
-
-      const user = new User({ email, password: hashedPassword });
-
-      await user.save();
-
-      const token = jwt.sign({ userId: user.id }, config.get('jwtSecret'), {
-        expiresIn: '1h',
-      });
-
-      return res.send(vm.login(token));
-    } catch {
-      return res.status(500).send(vm.error('Something went wrong'));
+      const {email, password} = req.body;
+      const userData = await AuthService.login(email, password);
+      res.cookie('refreshToken', {}, {maxAge: 1 * 24 * 60 * 60 * 1000, httpOnly: true});
+      return res.json(userData);
+      
+    } catch(err) {
+      next(err);
     }
   },
+
+  logout: async(req,res, next) =>  {
+    try {
+      const {refreshToken} = req.cookies;
+      const token = await AuthService.logout(refreshToken);
+      res.clearCookie('refreshToken')
+      return res.status(200);
+    } catch(err) {
+      next(err);
+    }
+  },
+
+  activate: async(req,res, next) =>  {  
+    try {
+      const {activationLink} = req.params.link;
+
+      await AuthService.activate(activationLink);
+
+      return res.redirect('http://localhost:3000/')
+      
+    } catch(err) {
+      next(err);
+    }
+  },
+
+  refresh: async(req,res, next) =>  {
+    try {
+      const {refreshToken} = req.cookies;
+      const userData = await AuthService.refresh(refreshToken);
+      res.cookie('refreshToken', {}, {maxAge: 1 * 24 * 60 * 60 * 1000, httpOnly: true});
+      return res.json(userData);
+    } catch(err) {
+      next(err);
+    }
+  }
 };

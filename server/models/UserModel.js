@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const schema = new Schema({
+const UserSchema = new Schema({
   email: {
     type: String,
     required: true,
@@ -10,6 +10,13 @@ const schema = new Schema({
     type: String,
     required: true,
   },
+  isActivated: {
+    type: Boolean,
+    default: false,
+  },
+  activationLink: {
+    type: String
+  }
 });
 
-module.exports = model('User', schema);
+module.exports = model('User', UserSchema);

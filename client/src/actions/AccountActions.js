@@ -29,14 +29,14 @@ export const unauthorizeUser = data => ({
 
 export const registerUser = values => async dispatch => {
   const data = await authService.register(values);
-  if (!data.status) {
-    dispatch(accountError(data));
-    return;
-  }
-  dispatch({
-    type: REGISTER_USER,
-    payload: data,
-  });
+  // if (!data.status) {
+  //   dispatch(accountError(data));
+  //   return;
+  // }
+  // dispatch({
+  //   type: REGISTER_USER,
+  //   payload: data,
+  // });
 };
 
 export const accountError = error => ({

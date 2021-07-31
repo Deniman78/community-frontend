@@ -1,13 +1,7 @@
 const { check, validationResult } = require('express-validator');
+const ApiError = require('../exceptions/ApiError')
 
-exports.userValidator = [
-  //   check('name')
-  //     .trim()
-  //     .escape()
-  //     .not()
-  //     .isEmpty()
-  //     .withMessage('User name can not be empty!')
-  //     .bail(),
+module.exports = [
   check('email')
     .trim()
     .normalizeEmail()
@@ -20,8 +14,9 @@ exports.userValidator = [
     .bail(),
   (req, res, next) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty())
-      return res.status(400).json({ errors: errors.array() });
+    if (!errors.isEmpty()){
+      throw ApiError.BadRequest("Data incorrect", errors.array());
+    }
     next();
   },
 ];

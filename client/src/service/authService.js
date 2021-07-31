@@ -22,16 +22,16 @@ class AuthService {
     return axios
       .post('/api/auth/register', data)
       .then(({ data }) => {
-        if (data.status) {
-          localStorage.setItem('token', data.token);
-        }
-        return data;
+        // if (data.status) {
+        //   localStorage.setItem('token', data.token);
+        // }
+        // return data;
       })
       .catch(({ response }) => {
-        if (response.data.errors) {
-          return { status: false, error: response.data.errors[0].msg };
-        }
-        return response.data;
+        // if (response.data.errors) {
+        //   return { status: false, error: response.data.errors[0].msg };
+        // }
+        // return response.data;
       });
   };
 }

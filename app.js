@@ -1,13 +1,20 @@
 const express = require('express');
-const swagger = require('./server/swagger');
+const cors = require('cors');
+const cookieParser = require('cookie-parser')
+
+const {ErrorMiddleware} = require('./server/middlewares')
 
 const app = express();
-app.use(express.json({ extended: true }));
+
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors());
 
 // Routes
 
 require('./server/routes')(app);
 
-swagger(app);
+app.use(ErrorMiddleware);
+
 
 module.exports = app;
