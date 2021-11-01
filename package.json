@@ -1,43 +1,22 @@
 {
-  "name": "community",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "name": "community-frontend",
+  "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "server": "nodemon ./bin/www",
-    "client": "npm run start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "pretty-quick": "pretty-quick --staged"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Deniman78/community.git"
-  },
-  "author": "Denis Manchenko <manchenko.d@brights.cloud>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Deniman78/community/issues"
-  },
-  "homepage": "https://github.com/Deniman78/community#readme",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "config": "^3.3.6",
-    "cookie-parser": "^1.4.5",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "express-validator": "^6.11.1",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.12.7",
-    "nodemailer": "^6.6.3"
+    "next": "12.0.2",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
   },
   "devDependencies": {
-    "concurrently": "^6.1.0",
-    "express-swagger-generator": "^1.1.17",
-    "husky": "^6.0.0",
-    "nodemon": "^2.0.7",
-    "prettier": "^2.3.0",
-    "pretty-quick": "^3.1.0",
-    "uuid": "^8.3.2"
+    "@types/node": "16.11.6",
+    "@types/react": "17.0.33",
+    "eslint": "7",
+    "eslint-config-next": "12.0.2",
+    "typescript": "4.4.4"
   }
 }
